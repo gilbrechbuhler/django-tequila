@@ -17,6 +17,7 @@ logger = logging.getLogger('django_tequila.middleware')
 
 def get_query_string(params, new_params=None, remove=None):
     """ Allow to rewrite params from url """
+    print(params)
     if new_params is None: new_params = {}
     if remove is None: remove = []
     p = params.copy()
@@ -24,18 +25,18 @@ def get_query_string(params, new_params=None, remove=None):
         for k in p.keys():
             if k.startswith(r):
                 del p[k]
-                
+
     for k, v in new_params.items():
         if v is None:
             if k in p:
                 del p[k]
         else:
             p[k] = v
-    
+
     for k, v in p.items():
         if isinstance(v, (list,tuple)):
             p[k] = v[0]
-    
+
     return '?%s' % urlencode(p)
 
 class TequilaMiddleware(PersistentRemoteUserMiddleware):
@@ -50,11 +51,11 @@ class TequilaMiddleware(PersistentRemoteUserMiddleware):
 
     # Name of request key to grab the key from
     header = "key"
-    
+
     def process_request(self, request):
         # AuthenticationMiddleware is required so that request.user exists.
         if not hasattr(request, 'user'):
-            return 
+            return
             raise ImproperlyConfigured(
                 "The Django remote user auth middleware requires the"
                 " authentication middleware to be installed.  Edit your"
@@ -76,7 +77,7 @@ class TequilaMiddleware(PersistentRemoteUserMiddleware):
             if self.force_logout_if_no_header and request.user.is_authenticated:
                 self._remove_invalid_user(request)
             return
-        
+
         # We are seeing this user for the first time in this session, attempt
         # to authenticate the user.
         logger.debug("First time user found, going for authentication "
@@ -105,16 +106,16 @@ class TequilaMiddleware(PersistentRemoteUserMiddleware):
 
             try:
                 clean_url = settings.TEQUILA_CLEAN_URL
-                
+
                 if clean_url:
                     #get the url, remove key and redirect to it
                     cleaned_url = request.path
-                    
+
                     #QueryDict to dict
                     params = dict(request.GET.iterlists())
-                    
+
                     cleaned_url += get_query_string(params, remove=self.header)
                     return HttpResponseRedirect(cleaned_url)
 
             except AttributeError:
-                pass    
+                pass
