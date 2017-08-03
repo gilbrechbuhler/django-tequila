@@ -27,6 +27,8 @@ def get_query_string(params, new_params=None, remove=None):
             if k.startswith(r):
                 del p[k]
 
+    print(p)
+
     for k, v in new_params.items():
         if v is None:
             if k in p:
