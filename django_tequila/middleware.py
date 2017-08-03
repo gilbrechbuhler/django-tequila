@@ -22,12 +22,12 @@ def get_query_string(params, new_params=None, remove=None):
     if remove is None: remove = []
     p = params.copy()
     print(p)
+    print(remove)
+    print(p.keys()[0].startswith('e'))
     for r in remove:
         for k in p.keys():
             if k.startswith(r):
                 del p[k]
-
-    print(p)
 
     for k, v in new_params.items():
         if v is None:
@@ -35,7 +35,6 @@ def get_query_string(params, new_params=None, remove=None):
                 del p[k]
         else:
             p[k] = v
-    print(p)
 
     for k, v in p.items():
         if isinstance(v, (list,tuple)):
