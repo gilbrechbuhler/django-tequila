@@ -17,7 +17,6 @@ logger = logging.getLogger('django_tequila.middleware')
 
 def get_query_string(params, new_params=None, remove=None):
     """ Allow to rewrite params from url """
-    print(params)
     if new_params is None: new_params = {}
     if remove is None: remove = []
     p = params.copy()
@@ -36,6 +35,8 @@ def get_query_string(params, new_params=None, remove=None):
     for k, v in p.items():
         if isinstance(v, (list,tuple)):
             p[k] = v[0]
+
+    print(p)
 
     return '?%s' % urlencode(p)
 
