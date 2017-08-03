@@ -21,10 +21,8 @@ def get_query_string(params, new_params=None, remove=None):
     if new_params is None: new_params = {}
     if remove is None: remove = []
     p = params.copy()
-    print(p)
-    print(remove)
-    print(p.keys()[0].startswith('e'))
     for r in remove:
+        print(r)
         for k in p.keys():
             if k.startswith(r):
                 del p[k]
