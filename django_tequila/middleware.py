@@ -33,12 +33,12 @@ def get_query_string(params, new_params=None, remove=None):
             p[k] = v
 
     for k, v in p.items():
+        print('{} : {} [{}]'.format(k, v, type(v)))
         if isinstance(v, (list,tuple)):
             p[k] = v[0]
 
-    print(p)
-
     return '?%s' % urlencode(p)
+
 
 class TequilaMiddleware(PersistentRemoteUserMiddleware):
     """
