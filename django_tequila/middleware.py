@@ -17,13 +17,17 @@ logger = logging.getLogger('django_tequila.middleware')
 
 def get_query_string(params, new_params=None, remove=None):
     """ Allow to rewrite params from url """
+    print(params)
     if new_params is None: new_params = {}
     if remove is None: remove = []
     p = params.copy()
+    print(p)
     for r in remove:
         for k in p.keys():
             if k.startswith(r):
                 del p[k]
+
+    print(p)
 
     for k, v in new_params.items():
         if v is None:
@@ -31,9 +35,9 @@ def get_query_string(params, new_params=None, remove=None):
                 del p[k]
         else:
             p[k] = v
+    print(p)
 
     for k, v in p.items():
-        print('{} : {} [{}]'.format(k, v, type(v)))
         if isinstance(v, (list,tuple)):
             p[k] = v[0]
 
